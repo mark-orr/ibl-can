@@ -104,3 +104,38 @@ def dist_of_endstates(x):
             #ASSIGN o to array at i
             full_freq_array[i] = int(0)
     return full_freq_array
+
+
+def wass(b,t):
+    '''
+    b is base distribution (expects np.array of integers)
+    t is test distribution (expects same)
+    returns wass number not normalized
+    note: if want to normalize it, divid wass by len of dist minuse
+    1 as this is dividing by the max
+    '''
+    b_prob = b/b.sum()
+    t_prob = t/t.sum()
+    
+    return np.sum(np.abs(np.cumsum(b_prob)-np.cumsum(t_prob)))
+
+def wass_norm(b,t):
+    '''
+    b is base distribution (expects np.array of integers)
+    t is test distribution (expects same)
+    returns wass number not normalized
+    note: if want to normalize it, divid wass by len of dist minuse
+    1 as this is dividing by the max
+    '''
+    b_prob = b/b.sum()
+    t_prob = t/t.sum()
+
+    wass_raw = np.sum(np.abs(np.cumsum(b_prob)-np.cumsum(t_prob)))
+   
+    return wass_raw/len(b_prob)
+
+#TEST
+#a = np.array([10,0,0,0,0,0,0,0,0,0])
+#b = np.array([0,0,0,0,0,0,0,0,0,10])
+#wass(a,b)
+#EOF
