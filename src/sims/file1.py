@@ -13,6 +13,14 @@ graph_out_dir = '/Users/mo6xj/Projects/ibl-can/graph-out/'
 #THE ORIGINAL DATA FROM ANES 2012 10 Items
 df = pd.read_csv(f'{data_in_dir}Obama.csv')
 
+'''
+NOTES: 
+BE CAREFUL WHEN RUNNING THE SIM RUNS LOOPS
+--Not want to run them over if playing with the ibl can comparison.
+--for ibl can comparison, see last code block which only reads in 
+csvs from sims in sim blocks.
+'''
+
 '''SIM RUNS'''
 #IBL PYACTUP
 noise_list = [.01,.1,.20,.30,.40,.5,.6,.7,.8,.9,1,1.5,2,4,6,8,10]
@@ -78,8 +86,68 @@ for i in noise_list:
 
 can_num_att_by_noise = catch_num_attractors
 
-#COMPARISION PLOT
+
+'''PLOTS'''
+#COMPARISION PLOT QUICK RUN AFTER SIMS
 plt.plot(can_num_att_by_noise)
 plt.plot(ibl_num_att_by_noise)
-plt.savefig(f'{graph_out_dir}Num_Endstates_CAN-IBL.png',dpi=300,bbox_inches='tight')
+#plt.savefig(f'{graph_out_dir}Num_Endstates_CAN-IBL.png',dpi=300,bbox_inches='tight')
 plt.show()
+
+
+#USABLE FOR PUBLICATION
+#IBL
+noise_list = [.01,.1,.20,.30,.40,.5,.6,.7,.8,.9,1,1.5,2,4,6,8,10]
+catch_num_attractors = np.array([])
+for i in noise_list:
+    #INITS
+    ns_fn = i
+    sim_name = f'ibl_noise_{ns_fn}'
+    #BEGIN ANALYSIS
+    sim_endstates = ibl.extract_endstates(f'{data_out_dir}{sim_name}.csv')
+    catch_num_attractors = np.append(catch_num_attractors,len(sim_endstates[0]))
+
+#WRITE FOR COMPARE TO ISING SAMPLER SIMs   
+ibl_num_att_by_noise = catch_num_attractors
+
+#CAN - ISING SAMPLER SIMS
+#NOTE CAN SIMS RUN ALREADY IN R
+noise_list = [20,10,9,8,7,6,5,4,3,2,1,.5,.25,.125,.075,.03,.01]
+catch_num_attractors = np.array([])
+for i in noise_list:
+    #INITS
+    ns_fn = i
+    sim_name = f'can_beta_{ns_fn}'
+    #BEGIN ANALYSIS
+    sim_endstates = ibl.extract_endstates(f'{data_out_dir}{sim_name}.csv')
+    catch_num_attractors = np.append(catch_num_attractors,len(sim_endstates[0]))
+    
+can_num_att_by_noise = catch_num_attractors
+
+
+
+#COMPARISION PLOT QUICK RUN AFTER SIMS
+x = np.arange(1,18)
+fig, axes = plt.subplots(1,1,figsize=(5,5))
+
+axes.plot(x,can_num_att_by_noise,color='blue',marker='o',dashes=[0,2,2,2],label='CAN',linewidth=1)
+axes.plot(x,ibl_num_att_by_noise,color='black',marker='+',dashes=[0,0,2,2],label='IBL',linewidth=1)
+axes.legend()
+
+axes.set_xlabel('Noise Level (IBL)', labelpad=2,size=10)
+axes.set_ylabel('Number of Unique Endstates', labelpad=1,size=10)
+
+axes.tick_params(axis='x', labelsize=7)
+axes.tick_params(axis='y', labelsize=7)
+axes.set_xticks(x)
+axes.set_xticklabels(labels=['.01','.1','.20','.30','.40','.5','.6','.7','.8','.9','1','1.5','2','4','6','8','10'])
+#SECOND AXIS
+axes2 = axes.twiny()
+axes2.set_xlabel('Noise Level (CAN)', labelpad=2,size=10)
+axes2.tick_params(axis='x', labelsize=7)
+axes2.set_xticks(x)
+axes2.set_xticklabels(labels=['20','10','9','8','7','6','5','4','3','2','1','.5','.25','.125','.075','.03','.01'])
+plt.savefig(f'{graph_out_dir}Num_Endstates_CAN-IBL.png',dpi=300,bbox_inches='tight')
+#plt.show()
+
+#EOF

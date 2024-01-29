@@ -10,5 +10,11 @@ file1.R
 
 file2.py:
     generates the wass dist plots per can and per ibl separately.
+
+file3.py:
+    Generates the multi panel plots of the Gibbs dist.
+
+file4.py:
+    Generates the tables of the states for different uses.
     
 EOF
