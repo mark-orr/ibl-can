@@ -41,6 +41,24 @@ def sim_no_cue(m,n):
 
     return use
 
+def sim_w_cue(m,n,x):
+    '''
+    m is pyactup memory instance
+    n is the number of simulations to run
+    x is a str of the chunk key for cue
+    this returns a two dim numpy array, each inner
+    is a retrieval
+    '''
+    #SIMULATE RETRIEVAL
+    catch = np.array([9,9,9,9,9,9,9,9,9,9])
+    for i in range(0,n):
+        tmp = m.retrieve({x:1})
+        tmp2 = np.array(list(tmp.values()))
+        catch = np.vstack((catch,tmp2))
+    use = catch[1:]
+
+    return use
+
 def convert_dec_to_array(x):
     mystr = format(x, '010b') #WITH PADDING
     return np.fromiter(mystr, dtype=int)

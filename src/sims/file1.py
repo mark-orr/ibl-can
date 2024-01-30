@@ -21,6 +21,14 @@ BE CAREFUL WHEN RUNNING THE SIM RUNS LOOPS
 csvs from sims in sim blocks.
 '''
 
+'''ORIGINAL DATA AS COMPARISON'''
+real_sim_endstates = ibl.extract_endstates(f'{data_in_dir}Obama.csv')
+real_dist_endstates = ibl.dist_of_endstates(real_sim_endstates)
+plt.style.use('fivethirtyeight')
+plt.plot(ibl.dist_of_endstates(real_sim_endstates))
+plt.savefig(f'{graph_out_dir}Fig_Gibbs_RealData.png',dpi=400,bbox_inches='tight')
+
+
 '''SIM RUNS'''
 #IBL PYACTUP
 noise_list = [.01,.1,.20,.30,.40,.5,.6,.7,.8,.9,1,1.5,2,4,6,8,10]
@@ -126,7 +134,7 @@ can_num_att_by_noise = catch_num_attractors
 
 
 
-#COMPARISION PLOT QUICK RUN AFTER SIMS
+#COMPARISION PLOT
 x = np.arange(1,18)
 fig, axes = plt.subplots(1,1,figsize=(5,5))
 
@@ -146,7 +154,7 @@ axes2 = axes.twiny()
 axes2.set_xlabel('Noise Level (CAN)', labelpad=2,size=10)
 axes2.tick_params(axis='x', labelsize=7)
 axes2.set_xticks(x)
-axes2.set_xticklabels(labels=['20','10','9','8','7','6','5','4','3','2','1','.5','.25','.125','.075','.03','.01'])
+axes2.set_xticklabels(labels=['0.05','0.1','.11','.125','.14','.17','.2','.25','.33','.5','1','2','4','8','13','33','100'])
 plt.savefig(f'{graph_out_dir}Num_Endstates_CAN-IBL.png',dpi=300,bbox_inches='tight')
 #plt.show()
 

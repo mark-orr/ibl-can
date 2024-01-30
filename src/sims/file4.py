@@ -44,3 +44,17 @@ for i in noise_list:
 can_endstates = catch_endstates
 
 '''NOW WHAT DO WE DO WITH THESE'''
+
+ibl_noise_list = [.01,.1,.20,.30,.40,.5,.6,.7,.8,.9,1,1.5,2,4,6,8,10]
+can_noise_list = [20,10,9,8,7,6,5,4,3,2,1,.5,.25,.125,.075,.03,.01]
+for i in range(0,17):
+    print('NEW LOOP')
+    print('NEW LOOP')
+    print('NEW LOOP')
+    print('NOISE INDEX: ', i)
+    print('IBL, noise: ',ibl_noise_list[i])
+    print(ibl_endstates[i])
+    print('CAN, noise: ',can_noise_list[i])
+    print(can_endstates[i]) 
+
+#EOF
