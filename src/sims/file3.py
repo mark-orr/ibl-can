@@ -84,9 +84,9 @@ plt.savefig(f'{graph_out_dir}CAN_Gibbs_2X4.png',dpi=300,bbox_inches='tight')
 
 
 '''COMBINE INTO ONE PLOT'''
+plt.style.use('fivethirtyeight')
 fig, axes = plt.subplots(2,4,figsize=(5,5),sharex=True,sharey=True)
-
-noise_list = [.2,.4,.9,6]
+noise_list = [.2,.5,.9,6]
 panel_list = ['A','B','C','D']
 counter = 0
 for x in range(0,1):
